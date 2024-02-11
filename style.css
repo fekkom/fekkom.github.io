@@ -173,7 +173,7 @@ nav .fa{
     .nav-links{
         position: absolute;
         background: rgb(180,161,153);
-        height: 100vh;
+        height: auto;
         width: 200px;
         top: 0;
         right: -200px;
