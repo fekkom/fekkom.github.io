@@ -61,15 +61,17 @@
         </nav>
         <h1>Τράπεζα Θεμάτων</h1>
     </section>
-    <section class="our-city">
-    <body>   
-        <div class="textL">
-        <h1 style="font-size: 27px;"><br>Γραπτά Σχολών</h1>
-            <p style="text-align: justify;">Σας καλωσορίζουμε σας στην Τράπεζα Θεμάτων μας, έναν χώρο αφιερωμένο στην υποστήριξη των φοιτητών μας! Εδώ, στο πνεύμα της αλληλεγγύης και της εκπαιδευτικής ανταλλαγής, παρέχουμε μια ποικιλία θεμάτων που καλύπτουν διάφορες επιστημονικές περιοχές.
-                Σκοπός μας είναι να βοηθήσουμε τους φοιτητές να ενισχύσουν τις γνώσεις τους, προσφέροντας πρόσβαση σε εκπαιδευτικό υλικό που καλύπτει τα διάφορα μαθήματα 
-            <p style="text-align: justify;">Στους ακόλουθους συνδέσμους θα βρείτε γραπτά για
-                <br>
-                <a href="https://drive.google.com/drive/folders/1uI-yDSpVsqgxd8mwDnE_Pl0A7gwE7Ucf?usp=sharing" target="_blank">Νομική</a>    <br>
+
+    <section class="our-city section">
+        <div class="city-block">
+            <div class="text">
+                <h2><br>Γραπτά Σχολών</h2>
+                <p style="text-align: justify;">Σας καλωσορίζουμε σας στην Τράπεζα Θεμάτων μας, έναν χώρο αφιερωμένο στην υποστήριξη των φοιτητών μας!<br> Εδώ, στο πνεύμα της αλληλεγγύης και της εκπαιδευτικής ανταλλαγής, παρέχουμε μια ποικιλία θεμάτων που καλύπτουν διάφορες επιστημονικές περιοχές.
+                    Σκοπός μας είναι να βοηθήσουμε τους φοιτητές να ενισχύσουν τις γνώσεις τους, προσφέροντας πρόσβαση σε εκπαιδευτικό υλικό που καλύπτει τα διάφορα μαθήματα
+                </p>
+                <p style="text-align: justify;"><h1>Στους ακόλουθους συνδέσμους θα βρείτε γραπτά για :</h1>
+                    <br>
+                    <a href="https://drive.google.com/drive/folders/1uI-yDSpVsqgxd8mwDnE_Pl0A7gwE7Ucf?usp=sharing" target="_blank">Νομική</a>    <br>
                   <a href="https://drive.google.com/drive/folders/1lmFRmcVyq--7zqlPR91fyVdxLJfj4xMt?usp=drive_link" target="_blank">Παιδαγωγικα 1ο</a>    <br>
                   <a href="https://drive.google.com/drive/folders/1lHKVTaBMw7IB55s6xsVqRJ9wfMhJ2-VA?usp=drive_link" target="_blank">Δευτεροβαθμια εκπ. 2ο</a>    <br>
                  <a href="https://drive.google.com/drive/folders/1RZDwiC8h-pQAXQhfSH-kkllw1oEiXp9p?usp=drive_link" target="_blank">Ψυχολογία 2ο</a>    <br>
@@ -79,21 +81,60 @@
                   <a href="https://drive.google.com/drive/folders/1nMYQfmtgLKtG_pOBIeZnLnNcEH1Y1qEC?usp=drive_link" target="_blank">Εργαστήριο 2ο</a>    <br>
                   <a href="https://drive.google.com/drive/folders/1brrt4XNZINq29Lt895pK-tdYif1srZ9w?usp=drive_link" target="_blank">Εμβιομηχανική 1ο</a>    <br>
             </p>
+    
+        </div>
+    </section>
+    </body>
+    <!-- SCRIPTS -->
+    <script>
+        // Mobile menu (ίδιο μοτίβο με την Αρχική)
+        function showMenu() {
+            const nav = document.getElementById("navLinks");
+            nav.classList.add('open');
+            nav.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('menu-open');
+        }
+        function hideMenu() {
+            const nav = document.getElementById("navLinks");
+            nav.classList.remove('open');
+            nav.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('menu-open');
+        }
+
+        // Κλείσιμο με swipe (από αριστερά προς δεξιά)
+        let touchStartX = 0, touchEndX = 0;
+        document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+        document.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; if (touchEndX - touchStartX > 50) hideMenu(); });
+
+        // ESC για κλείσιμο + keyboard support για icon buttons
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') hideMenu();
+            const active = document.activeElement;
+            if ((e.key === 'Enter' || e.key === ' ') && active && active.classList && active.classList.contains('fa')) {
+                active.click();
+                e.preventDefault();
+            }
+        });
+
+        // Σε mobile πλάτος ξεκινά κρυφό
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.innerWidth <= 1024) hideMenu();
+        });
+        // Σε mobile πλάτος ξεκινά κρυφό
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.innerWidth <= 1024) hideMenu();
+            // Dynamic year for footer
+            const y = document.getElementById('year');
+            if (y) y.textContent = new Date().getFullYear();
+        });
+    </script>
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-inner">
+            <p>
+                © <span id="year"></span> Φοιτητική Ένωση Κυπρίων Κομοτηνής (ΦΕΚΚΟΜ).
+                All rights reserved.
             </p>
         </div>
-    </body>
-    </section>
-    
-    <script>
-        var navLinks = document.getElementById("navLinks");
-
-        function showMenu(){
-            navLinks.style.right = "0";
-        }
-
-        function hideMenu(){
-            navLinks.style.right = "-200px";
-        }
-    </script>
+    </footer>
 </body>
 </html>

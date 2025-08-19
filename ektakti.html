@@ -66,17 +66,58 @@
 <a href="https://digital-strategy.ec.europa.eu/el/policies/112" target="_blank">
     <img style="width: 20%; display: block; margin: 0 auto;" src="112.png" alt="112 image">
 </a>
-    <!----JavaScript for Tonggle Menu----->
-    <script>
-        var navLinks = document.getElementById("navLinks");
 
-        function showMenu(){
-            navLinks.style.right = "0";
-        }
+  <!-- SCRIPTS -->
+  <script>
+    // Mobile menu (ίδιο μοτίβο με την Αρχική)
+    function showMenu() {
+      const nav = document.getElementById("navLinks");
+      nav.classList.add('open');
+      nav.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('menu-open');
+    }
+    function hideMenu() {
+      const nav = document.getElementById("navLinks");
+      nav.classList.remove('open');
+      nav.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('menu-open');
+    }
 
-        function hideMenu(){
-            navLinks.style.right = "-200px";
-        }
-    </script>
+    // Κλείσιμο με swipe (από αριστερά προς δεξιά)
+    let touchStartX = 0, touchEndX = 0;
+    document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+    document.addEventListener('touchend',   e => { touchEndX = e.changedTouches[0].screenX; if (touchEndX - touchStartX > 50) hideMenu(); });
+
+    // ESC για κλείσιμο + keyboard support για icon buttons
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideMenu();
+      const active = document.activeElement;
+      if ((e.key === 'Enter' || e.key === ' ') && active && active.classList && active.classList.contains('fa')) {
+        active.click();
+        e.preventDefault();
+      }
+    });
+
+    // Σε mobile πλάτος ξεκινά κρυφό
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth <= 1024) hideMenu();
+    });
+           // Σε mobile πλάτος ξεκινά κρυφό
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth <= 1024) hideMenu();
+      // Dynamic year for footer
+      const y = document.getElementById('year');
+      if (y) y.textContent = new Date().getFullYear();
+    });
+  </script>
+    <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p>
+        © <span id="year"></span> Φοιτητική Ένωση Κυπρίων Κομοτηνής (ΦΕΚΚΟΜ).
+        All rights reserved.
+      </p>
+    </div>
+  </footer>
+
 </body>
 </html>
