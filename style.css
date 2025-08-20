@@ -331,25 +331,43 @@ nav .fa { display: none; }
   }
 }
 
-/* =========================
-   RESPONSIVE NAV (MOBILE)
-========================= */
+/* ============ MOBILE NAV ============ */
 @media (max-width:1024px){
-  /* πριν ήταν μόνο section.header … */
+  /* το overlay του μενού */
   section.header nav .nav-links,
   section.sub-header nav .nav-links{
-    position: fixed !important;
-    top: 0; left: 0; right: 0; bottom: 0;
-    width: 100%; height: 100vh;
-    padding: 56px 20px 24px;
-    background: #0b1020; color: #e5e7eb;
+    position: fixed;
+    inset: 0;                          /* top/right/bottom/left: 0 */
+    box-sizing: border-box;
+    background:#0b1020; color:#e5e7eb;
     z-index: 9999;
-    overflow-y: auto; overflow-x: hidden;
+
+    /* full device viewport + εσωτερικό scroll */
+    min-height: 100vh;  max-height: 100vh;
+    min-height: 100svh; max-height: 100svh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+
+    /* κενά + ασφαλείς περιοχές */
+    padding-top: 56px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: calc(48px + env(safe-area-inset-bottom)); /* έξτρα «ανάσα» */
+
+    /* slide-in/out */
     transform: translateX(100%);
     transition: transform .30s ease;
   }
+  /* μικρό «μαξιλαράκι» στο τέλος, για να μπορεί να φτάσει ΠΡΑΓΜΑΤΙΚΑ τέρμα κάτω */
+  section.header nav .nav-links::after,
+  section.sub-header nav .nav-links::after{
+    content:""; display:block;
+    height: calc(40px + env(safe-area-inset-bottom));
+  }
 
-  section.header     nav .nav-links.open,
+  section.header nav .nav-links.open,
   section.sub-header nav .nav-links.open{
     transform: translateX(0);
   }
@@ -360,35 +378,49 @@ nav .fa { display: none; }
   section.sub-header nav .nav-links .fa-close{
     position:absolute; top:12px; left:12px;
   }
+
+  /* λίστα */
   #menu, #menu ul{ list-style:none; margin:0; padding:0; width:100%; }
-  #menu > li{ border-bottom:1px solid rgba(255,255,255,.1); }
+  #menu > li{ border-bottom:1px solid rgba(255,255,255,.10); }
   #menu > li > a{
     display:block; padding:12px 0; font-size:18px;
     color:#e5e7eb; text-decoration:none; font-weight:600;
+    white-space: normal;
   }
+  #menu li ul{ margin:6px 0 12px; padding-left:12px; }
   #menu li ul li a{
     display:block; padding:8px 0 8px 14px; font-size:16px;
     color:#cbd5e1; text-decoration:none;
+    white-space:normal; overflow-wrap:anywhere; word-break:break-word;
   }
 }
-body.menu-open{ overflow:hidden; }
 
-/* Desktop reset για να μη χαλάει */
-@media(min-width:1025px){
+/* Κλείδωμα background όταν ανοίγει το μενού (παραμένει) */
+body.menu-open{
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Desktop reset */
+@media (min-width:1025px){
   section.header nav .nav-links,
-    section.sub-header nav .nav-links{
-    position:static !important; transform:none !important;
-    background:transparent !important;
+  section.sub-header nav .nav-links{
+    position: static !important;
+    transform: none !important;
+    background: transparent !important;
     width:auto; height:auto; padding:0;
+    overflow: visible;
   }
-  nav .fa.fa-bars,
-  nav .fa.fa-close { display:none !important; }
-
-  /* Social icons visible */
-  nav .fa.fa-facebook,
-  nav .fa.fa-instagram {
-    display:inline-block !important;
-    font-size:20px; margin-left:10px; color:#fff;
-  }
-  #menu > li > a{ font-size:16px; }
+  nav .fa.fa-bars, nav .fa.fa-close{ display:none !important; }
 }
+
+nav .fa.fa-facebook,
+nav .fa.fa-instagram {
+  display: inline-block !important;
+  font-size: 20px;
+  margin-left: 10px;
+  color: #fff;
+  vertical-align: middle;
+}
+

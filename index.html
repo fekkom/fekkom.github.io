@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>FEKKOM — Αρχική</title>
   <meta name="description" content="Επίσημη σελίδα της Φοιτητικής Ένωσης Κυπρίων Κομοτηνής: νέα, ανακοινώσεις, χρήσιμες πληροφορίες για φοιτητές.">
   <meta property="og:title" content="FEKKOM — Φοιτητική Ένωση Κυπρίων Κομοτηνής">
@@ -10,72 +10,83 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fekkom.github.io/">
   <meta name="theme-color" content="#0f172a">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <link rel="icon" type="image/png" href="logo-circle.png">
-
-  <!-- Κύρια CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Γραμματοσειρές -->
+  <!-- Fonts / Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&family=Poppins:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <!-- Extra tweaks -->
+  <!-- Page-local fixes -->
   <style>
+    /* Sticky layout (αν για κάποιο λόγο λείπει από το style.css) */
+    html, body { height: 100%; }
+    body{ min-height:100dvh; display:flex; flex-direction:column; }
+    main{ flex:1 0 auto; }
+    .site-footer{ flex-shrink:0; }
+
     h1 { font-size: clamp(22px, 6vw, 40px); }
 
-    /* Mobile nav improvements */
-    @media (max-width: 768px){
-      .nav-links{
-        position: fixed;
-        top: 0;
-        right: -100%;    /* κρυφό αρχικά */
-        width: 100%;
-        height: 100vh;
+    /* ===== Mobile nav (νέο) ===== */
+    @media (max-width: 1024px){
+      /* Δίνω πλήρη ειδικότητα για να υπερισχύσει έναντι παλιών κανόνων */
+      section.header nav .nav-links{
+        position: fixed !important;
+        top: 0; right: -100%; left: 0; bottom: 0;
+        width: 100%; height: 100vh;
         background: #0b1020;
-        padding: 24px 16px;
+        padding: 56px 18px 20px;
         transition: right .3s ease;
         overflow-y: auto;
         z-index: 9999;
       }
-      nav .fa-bars,
-      nav .fa-close{
-        font-size: 28px;
-        padding: 12px;
-        line-height: 1;
-        color: #fff;
+      section.header nav .nav-links.open{ right: 0; } /* ανοίγει */
+
+      /* buttons */
+      nav .fa-bars, nav .fa-close{
+        font-size: 28px; color:#fff; line-height:1; padding:12px; cursor:pointer;
       }
-      .nav-links a{
-        display: inline-block;
-        padding: 10px 0;
-        font-size: 18px;
-        color: #e5e7eb;
+      section.header nav .nav-links .fa-close{ position:absolute; top:10px; left:10px; }
+
+      /* menu links */
+      #menu, #menu ul{ list-style:none; margin:0; padding:0; }
+      #menu > li{ border-bottom:1px solid rgba(255,255,255,.12); }
+      #menu > li > a{
+        display:block; padding:12px 4px; font-size:18px; color:#e5e7eb; text-decoration:none; font-weight:600;
       }
-      .nav-links ul ul a { font-size: 16px; }
+      #menu li ul{ margin:6px 0 10px 12px; }
+      #menu li ul a{ display:block; padding:8px 0; font-size:16px; color:#cbd5e1; }
+    }
+    body.menu-open{ overflow:hidden; } /* κλείδωμα scroll όταν ανοίγει το menu */
+
+    /* Desktop reset για να μη «μένει» fixed */
+    @media (min-width:1025px){
+      section.header nav .nav-links{
+        position: static !important; right:auto !important; left:auto !important;
+        width:auto !important; height:auto !important; padding:0 !important;
+        background:transparent !important; transform:none !important;
+        box-shadow:none !important; border-radius:0 !important;
+      }
+      nav .fa.fa-bars, nav .fa.fa-close{ display:none !important; }
     }
 
     /* Gallery */
-    .gallery {
+    .gallery{
       display:flex; justify-content:center; align-items:center;
-      height: 80vh;
-      overflow:hidden; position:relative; background:white;
+      height: 80vh; overflow:hidden; position:relative; background:#fff;
     }
-    .gallery img {
+    .gallery img{
       width:100%; height:100%; object-fit:contain; position:absolute;
-      opacity:0; transition:opacity 1s ease-in-out; will-change:opacity;
+      opacity:0; transition:opacity 1s ease-in-out;
     }
-    .gallery img.active { opacity:1; }
-    @media (max-width: 768px){
-      .gallery { height: 60vh; padding: 8px; }
-    }
+    .gallery img.active{ opacity:1; }
+    @media (max-width:768px){ .gallery{ height:60vh; padding:8px; } }
 
-    .icon-btn { cursor:pointer; }
-    .icon-btn:focus { outline:2px solid #60a5fa; outline-offset:2px; }
+    .icon-btn{ cursor:pointer; }
+    .icon-btn:focus{ outline:2px solid #60a5fa; outline-offset:2px; }
   </style>
 </head>
 
@@ -83,9 +94,7 @@
   <!-- HEADER -->
   <section class="header">
     <nav aria-label="Κύρια Πλοήγηση">
-      <a href="index.html">
-        <img src="logo.png" alt="Λογότυπο FEKKOM" style="border-radius:50%;">
-      </a>
+      <a href="index.html"><img src="logo.png" alt="Λογότυπο FEKKOM" style="border-radius:50%;"></a>
 
       <div class="nav-links" id="navLinks" aria-hidden="true">
         <i class="fa fa-close icon-btn" role="button" tabindex="0" aria-label="Κλείσιμο μενού" onclick="hideMenu()"></i>
@@ -139,12 +148,14 @@
     <h1>Καλωσορίσατε στη σελίδα της ΦΕΚΚΟΜ</h1>
   </section>
 
-  <div class="container">
-    <section class="our-city">
-      <div class="textL">
-        <h2>Αγαπητές συμφοιτήτριες, αγαπητοί συμφοιτητές,</h2>
+  <!-- MAIN (για sticky footer) -->
+  <main>
+    <div class="container">
+      <section class="our-city">
+        <div class="textL">
+          <h2>Αγαπητές συμφοιτήτριες, αγαπητοί συμφοιτητές,</h2>
         <p style="text-align: justify;">
-          Με αισθήματα χαράς, απευθύνω θερμό καλωσόρισμα στη κυπριακή φοιτητική οικογένεια. Η εισδοχή σας στο Δημοκρίτειο Πανεπιστήμιο Θράκης δεν μόνο μια προσωπική επιτυχία, αλλά και το πρώτο βήμα σε μια διαδρομή πνευματικής και κοινωνικής καλλιέργειας – μια πορεία που, όπως εύστοχα περιγράφει ο Καβάφης, είναι γεμάτη σταθμούς, εμπειρίες και γνώση, που θα διαμορφώσουν την προσωπική σας Ιθάκη.
+          Με αισθήματα χαράς, απευθύνω θερμό καλωσόρισμα στη κυπριακή φοιτητική οικογένεια. Η εισδοχή σας στο Δημοκρίτειο Πανεπιστήμιο Θράκης δεν είναι μόνο μια προσωπική επιτυχία, αλλά και το πρώτο βήμα σε μια διαδρομή πνευματικής και κοινωνικής καλλιέργειας – μια πορεία που, όπως εύστοχα περιγράφει ο Καβάφης, είναι γεμάτη σταθμούς, εμπειρίες και γνώση, που θα διαμορφώσουν την προσωπική σας Ιθάκη.
           <br><br>
           Με την ευκαιρία αυτή, σας προσκαλούμε να περιηγηθείτε στο ιστολόγιο της Φοιτητικής Ενώσεως που δημιουργήθηκε και τέθηκε σε λειτουργία κατά το ακαδημαϊκό έτος 2023-2024 με πρωτοβουλίες του τότε Διοικητικού Συμβουλίου.
           <br><br>
@@ -160,113 +171,93 @@
           Πρόεδρος Διοικητικού Συμβουλίου
         </p>
 
-
-        <!-- SLIDESHOW -->
-        <div class="gallery" aria-label="Προβολή φωτογραφιών">
-          <img src="komotini10.jpg" alt="Θέα από την Κομοτηνή" loading="lazy" decoding="async">
-          <img src="scroll2.png"   alt="Στιγμιότυπο εκδήλωσης 2" loading="lazy" decoding="async">
-          <img src="scroll3.png"   alt="Στιγμιότυπο εκδήλωσης 3" loading="lazy" decoding="async">
-          <img src="scroll4.png"   alt="Στιγμιότυπο εκδήλωσης 4" loading="lazy" decoding="async">
-          <img src="scroll5.png"   alt="Στιγμιότυπο εκδήλωσης 5" loading="lazy" decoding="async">
-          <img src="scroll6.png"   alt="Στιγμιότυπο εκδήλωσης 6" loading="lazy" decoding="async">
-          <img src="scroll7.png"   alt="Στιγμιότυπο εκδήλωσης 7" loading="lazy" decoding="async">
-          <img src="scroll8.png"   alt="Στιγμιότυπο εκδήλωσης 8" loading="lazy" decoding="async">
-          <img src="komotini8.jpg" alt="Πλατεία στην Κομοτηνή" loading="lazy" decoding="async">
-          <img src="komotini11.jpg" alt="Δρόμος στην Κομοτηνή" loading="lazy" decoding="async">
-          <img src="a.jfif" alt="Φωτογραφία Α" loading="lazy" decoding="async">
-          <img src="b.jfif" alt="Φωτογραφία Β" loading="lazy" decoding="async">
-          <img src="c.jfif" alt="Φωτογραφία Γ" loading="lazy" decoding="async">
-          <img src="d.jfif" alt="Φωτογραφία Δ" loading="lazy" decoding="async">
-          <img src="e.jfif" alt="Φωτογραφία Ε" loading="lazy" decoding="async">
-          <img src="f.jfif" alt="Φωτογραφία ΣΤ" loading="lazy" decoding="async">
-          <img src="g.jfif" alt="Φωτογραφία Ζ" loading="lazy" decoding="async">
-          <img src="h.jfif" alt="Φωτογραφία Η" loading="lazy" decoding="async">
-          <img src="i.jfif" alt="Φωτογραφία Θ" loading="lazy" decoding="async">
-          <img src="j.jfif" alt="Φωτογραφία Ι" loading="lazy" decoding="async">
-          <img src="k.jfif" alt="Φωτογραφία Κ" loading="lazy" decoding="async">
-          <img src="l.jfif" alt="Φωτογραφία Λ" loading="lazy" decoding="async">
-          <img src="m.jfif" alt="Φωτογραφία Μ" loading="lazy" decoding="async">
-          <img src="n.jfif" alt="Φωτογραφία Ν" loading="lazy" decoding="async">
-          <img src="o.jfif" alt="Φωτογραφία Ξ" loading="lazy" decoding="async">
-          <img src="p.jfif" alt="Φωτογραφία Ο" loading="lazy" decoding="async">
-          <img src="q.jfif" alt="Φωτογραφία Π" loading="lazy" decoding="async">
-          <img src="r.jfif" alt="Φωτογραφία Ρ" loading="lazy" decoding="async">
-          <img src="s.jfif" alt="Φωτογραφία Σ" loading="lazy" decoding="async">
+          <!-- SLIDESHOW -->
+          <div class="gallery" aria-label="Προβολή φωτογραφιών">
+            <img src="komotini10.jpg" alt="Θέα από την Κομοτηνή" loading="lazy" decoding="async">
+            <img src="scroll2.png"  alt="Στιγμιότυπο εκδήλωσης 2" loading="lazy" decoding="async">
+            <img src="scroll3.png"  alt="Στιγμιότυπο εκδήλωσης 3" loading="lazy" decoding="async">
+            <img src="scroll4.png"  alt="Στιγμιότυπο εκδήλωσης 4" loading="lazy" decoding="async">
+            <img src="scroll5.png"  alt="Στιγμιότυπο εκδήλωσης 5" loading="lazy" decoding="async">
+            <img src="scroll6.png"  alt="Στιγμιότυπο εκδήλωσης 6" loading="lazy" decoding="async">
+            <img src="scroll7.png"  alt="Στιγμιότυπο εκδήλωσης 7" loading="lazy" decoding="async">
+            <img src="scroll8.png"  alt="Στιγμιότυπο εκδήλωσης 8" loading="lazy" decoding="async">
+            <img src="komotini8.jpg"  alt="Πλατεία στην Κομοτηνή" loading="lazy" decoding="async">
+            <img src="komotini11.jpg" alt="Δρόμος στην Κομοτηνή" loading="lazy" decoding="async">
+            <img src="a.jfif" alt="Φωτογραφία Α" loading="lazy" decoding="async">
+            <img src="b.jfif" alt="Φωτογραφία Β" loading="lazy" decoding="async">
+            <img src="c.jfif" alt="Φωτογραφία Γ" loading="lazy" decoding="async">
+            <img src="d.jfif" alt="Φωτογραφία Δ" loading="lazy" decoding="async">
+            <img src="e.jfif" alt="Φωτογραφία Ε" loading="lazy" decoding="async">
+            <img src="f.jfif" alt="Φωτογραφία ΣΤ" loading="lazy" decoding="async">
+            <img src="g.jfif" alt="Φωτογραφία Ζ" loading="lazy" decoding="async">
+            <img src="h.jfif" alt="Φωτογραφία Η" loading="lazy" decoding="async">
+            <img src="i.jfif" alt="Φωτογραφία Θ" loading="lazy" decoding="async">
+            <img src="j.jfif" alt="Φωτογραφία Ι" loading="lazy" decoding="async">
+            <img src="k.jfif" alt="Φωτογραφία Κ" loading="lazy" decoding="async">
+            <img src="l.jfif" alt="Φωτογραφία Λ" loading="lazy" decoding="async">
+            <img src="m.jfif" alt="Φωτογραφία Μ" loading="lazy" decoding="async">
+            <img src="n.jfif" alt="Φωτογραφία Ν" loading="lazy" decoding="async">
+            <img src="o.jfif" alt="Φωτογραφία Ξ" loading="lazy" decoding="async">
+            <img src="p.jfif" alt="Φωτογραφία Ο" loading="lazy" decoding="async">
+            <img src="q.jfif" alt="Φωτογραφία Π" loading="lazy" decoding="async">
+            <img src="r.jfif" alt="Φωτογραφία Ρ" loading="lazy" decoding="async">
+            <img src="s.jfif" alt="Φωτογραφία Σ" loading="lazy" decoding="async">
+          </div>
         </div>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
+  </main>
 
-  <!-- Scripts -->
+  <!-- SCRIPTS -->
   <script>
     // Slideshow
     document.addEventListener("DOMContentLoaded", function () {
       const gallery = document.querySelector('.gallery');
       const images = gallery.querySelectorAll('img');
       let currentImageIndex = 0;
-      function updateGallery() {
-        images.forEach((image, index) => {
-          image.classList.toggle('active', index === currentImageIndex);
-        });
-      }
-      function nextImage() {
-        currentImageIndex = (currentImageIndex + 1) % images.length;
-        updateGallery();
-      }
-      setInterval(nextImage, 4000);
+      const updateGallery = () => images.forEach((img,i)=>img.classList.toggle('active', i===currentImageIndex));
+      setInterval(()=>{ currentImageIndex = (currentImageIndex+1)%images.length; updateGallery(); }, 4000);
       updateGallery();
     });
 
     // Mobile menu
-    function showMenu() {
-    const nav = document.getElementById("navLinks");
-    nav.classList.add('open');
-    nav.setAttribute('aria-hidden', 'false');
-  }
-  function hideMenu() {
-    const nav = document.getElementById("navLinks");
-    nav.classList.remove('open');
-    nav.setAttribute('aria-hidden', 'true');
-  }
-  // Για καλό και για κακό: ξεκίνα κρυφό σε <=1024px
-  document.addEventListener('DOMContentLoaded', () => {
-    if (window.innerWidth <= 1024) hideMenu();
-  });
-
-    // Keyboard support
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') hideMenu();
-      const active = document.activeElement;
-      if ((e.key === 'Enter' || e.key === ' ') && active.classList.contains('icon-btn')) {
-        active.click();
-        e.preventDefault();
-      }
-    });
-
-    // Swipe close
-    let touchStartX = 0, touchEndX = 0;
-    document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
-    document.addEventListener('touchend',   e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); });
-    function handleSwipe() {
-      if (touchEndX - touchStartX > 50) hideMenu();
+    function showMenu(){
+      const nav = document.getElementById("navLinks");
+      nav.classList.add('open');
+      nav.setAttribute('aria-hidden','false');
+      document.body.classList.add('menu-open');
     }
-       // Σε mobile πλάτος ξεκινά κρυφό
+    function hideMenu(){
+      const nav = document.getElementById("navLinks");
+      nav.classList.remove('open');
+      nav.setAttribute('aria-hidden','true');
+      document.body.classList.remove('menu-open');
+    }
+
+    // Ξεκίνα κρυφό σε mobile
     document.addEventListener('DOMContentLoaded', () => {
       if (window.innerWidth <= 1024) hideMenu();
-      // Dynamic year for footer
-      const y = document.getElementById('year');
-      if (y) y.textContent = new Date().getFullYear();
+      const y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
     });
+
+    // Keyboard + swipe
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideMenu();
+      const a = document.activeElement;
+      if ((e.key === 'Enter' || e.key === ' ') && a && a.classList && a.classList.contains('icon-btn')) {
+        a.click(); e.preventDefault();
+      }
+    });
+    let touchStartX=0, touchEndX=0;
+    document.addEventListener('touchstart', e=> touchStartX = e.changedTouches[0].screenX);
+    document.addEventListener('touchend',   e=> { touchEndX = e.changedTouches[0].screenX; if (touchEndX - touchStartX > 50) hideMenu(); });
   </script>
 
+  <!-- FOOTER -->
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
-      <p>
-        © <span id="year"></span> Φοιτητική Ένωση Κυπρίων Κομοτηνής (ΦΕΚΚΟΜ).
-        All rights reserved.
-      </p>
+      <p>© <span id="year"></span> Φοιτητική Ένωση Κυπρίων Κομοτηνής (ΦΕΚΚΟΜ). All rights reserved.</p>
     </div>
   </footer>
-
 </body>
 </html>

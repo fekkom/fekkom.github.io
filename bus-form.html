@@ -74,39 +74,56 @@
     <!-----UNI content-->
 
 
-    <!----JavaScript for Tonggle Menu----->
-    <script>
-        var navLinks = document.getElementById("navLinks");
+    <!-- SCRIPTS -->
+  <script>
+    // Slideshow
+    document.addEventListener("DOMContentLoaded", function () {
+      const gallery = document.querySelector('.gallery');
+      const images = gallery.querySelectorAll('img');
+      let currentImageIndex = 0;
+      const updateGallery = () => images.forEach((img,i)=>img.classList.toggle('active', i===currentImageIndex));
+      setInterval(()=>{ currentImageIndex = (currentImageIndex+1)%images.length; updateGallery(); }, 4000);
+      updateGallery();
+    });
 
-        function showMenu() {
-            navLinks.style.right = "0";
-        }
+    // Mobile menu
+    function showMenu(){
+      const nav = document.getElementById("navLinks");
+      nav.classList.add('open');
+      nav.setAttribute('aria-hidden','false');
+      document.body.classList.add('menu-open');
+    }
+    function hideMenu(){
+      const nav = document.getElementById("navLinks");
+      nav.classList.remove('open');
+      nav.setAttribute('aria-hidden','true');
+      document.body.classList.remove('menu-open');
+    }
 
-        function hideMenu() {
-            navLinks.style.right = "-200px";
-        }
-    </script>
-     <script>
-        let touchStartX = 0;
-        let touchEndX = 0;
-      
-        document.addEventListener('touchstart', function(e) {
-          touchStartX = e.changedTouches[0].screenX;
-        });
-      
-        document.addEventListener('touchend', function(e) {
-          touchEndX = e.changedTouches[0].screenX;
-          handleSwipe();
-        });
-      
-        function handleSwipe() {
-          // Αν το swipe είναι από αριστερά προς τα δεξιά
-          if (touchEndX - touchStartX > 50) {
-            hideMenu();
-          }
-        }
-      </script>
-      
+    // Ξεκίνα κρυφό σε mobile
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth <= 1024) hideMenu();
+      const y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
+    });
+
+    // Keyboard + swipe
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideMenu();
+      const a = document.activeElement;
+      if ((e.key === 'Enter' || e.key === ' ') && a && a.classList && a.classList.contains('icon-btn')) {
+        a.click(); e.preventDefault();
+      }
+    });
+    let touchStartX=0, touchEndX=0;
+    document.addEventListener('touchstart', e=> touchStartX = e.changedTouches[0].screenX);
+    document.addEventListener('touchend',   e=> { touchEndX = e.changedTouches[0].screenX; if (touchEndX - touchStartX > 50) hideMenu(); });
+  </script>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> Φοιτητική Ένωση Κυπρίων Κομοτηνής (ΦΕΚΚΟΜ). All rights reserved.</p>
+    </div>
+  </footer>
 </body>
-
 </html>
